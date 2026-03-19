@@ -1,0 +1,75 @@
+# Sprint 3 Wake effects analysis
+
+Goal: **Quantify how upstream turbines reduce the power production of downstream turbines due to wake effects.**
+Inputs:
+- Turbine positions (UTM)
+- Wind direction (mast)
+- Turbine Power (SCADA)
+- Nacelle wind speed
+- Turbine rotor diameter
+
+1. Step 1: Wind farm geometry analysis
+Tasks:
+- Plot true farm layout
+- Add mast positions
+- Verify farm orienatation
+Additional plots:
+- Turbine spacing
+- Nearest neighbor distances
+- Compute distances between wind turbines $d= \sqrt{(x_2 - x_1)^2 + (y_2 - y_1) ^2}$
+
+Outputs:
+- Turbines layout plot
+- Turbines spacing diagram
+- Nearest neighbor map
+
+2. Step 2: Wind direction statistics
+Using:
+- d31_1
+- d31_2
+Tasks:
+- Wind direction histogram
+- Wind rose
+- Dominant wind sectors
+Outputs:
+- Wind rose
+- Sector frequency plot
+
+3. Step 3: Define upstream and downstream turbines
+
+Combining wind direction + turbines coordinates
+
+For each timestamp:
+- Compute wind direction
+- Project turbine positions onto wind direction
+- Indentify upstream turbines
+
+Outputs:
+- Turbine alignment map
+- Upstream/downstream relationships
+
+4. Step 4- Select wake sectors
+- Since not all directions need to be analyzed
+- For example:
+    - 260°–280° (west wind)
+    - 240°–260° (SW wind)
+
+5. Step 5- Power deficit analysis
+- Now to power production comparison
+- Power defined as $R= \frac{P_{\mathrm{downstream}}}{P_{\mathrm{upstream}}}$
+## Step 1 - Create a wind farm layout plot
+
+6. Step 6- Wake visualization
+- Make plots like
+    - Wake map
+    - Directional wake plots
+
+7. Step 7- Compare with theory + some extension
+
+For example comparison with theory and Jensen wake model
+$$U = U_0 \left(1 - \frac{1-\sqrt{1-C_T}}{(1 + kx/D)^2}\right)$$
+Where:
+- $C_T$ - thrust coefficient
+- $k$ - wake decay constant
+- $x$ - downstream distance
+- $D$ - rotor diameter
