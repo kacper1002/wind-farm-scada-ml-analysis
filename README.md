@@ -47,6 +47,7 @@ Signals used include:
 ---
 
 ## Repository Structure
+```
 wind-farm-ml-analysis/
 │
 ├── notebooks/
@@ -65,7 +66,7 @@ wind-farm-ml-analysis/
 ├── README.md
 ├── requirements.txt
 └── .gitignore
-
+```
 
 ---
 
