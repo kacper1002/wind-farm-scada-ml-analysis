@@ -26,23 +26,29 @@ The goal is to understand both **how turbines behave physically** and **how well
 
 ## Dataset
 
-The analysis is based on a DTU wind farm SCADA dataset:
+The analysis is based on a DTU wind farm SCADA dataset from the Norre M2 site.
 
 - ~72,000 timestamps  
 - 10-minute resolution  
 - ~1.4 years of operation  
-- 42 turbines arranged in a grid (rows A–F, columns 1–7)  
+- 42 turbines arranged in a structured grid (rows A–F, columns 1–7)  
 
 Signals used include:
 
-- Turbine power output  
-- Nacelle wind speed  
-- Yaw misalignment  
-- Mast wind speed  
-- Mast wind direction  
+- turbine power output  
+- nacelle wind speed  
+- yaw misalignment  
+- mast wind speed  
+- mast wind direction  
 
-> ⚠️ The dataset is **not included** in this repository due to size and licensing constraints.  
-> To run the notebooks, place the dataset file in the `data/` folder.
+### Data Source
+
+The dataset is part of the DTU Wind Energy FAIR data initiative:
+
+👉 https://gitlab.windenergy.dtu.dk/fair-data/winddata-revamp/winddata-documentation/-/blob/0bf7ca74c028c2791dedea66a028d0a4edbcc4e0/norre_m2.md
+
+> ⚠️ The dataset itself is **not included** in this repository due to file size and access restrictions.  
+> To run the notebooks, download the data separately and place it in the `data/` folder.
 
 ---
 
