@@ -1,174 +1,200 @@
-# Wind Farm SCADA Machine Learning Analysis
+# Wind Farm SCADA Analysis: Power Curves, Wake Effects, and Machine Learning
 
-## Overview
+## Project Overview
 
-This project applies machine learning techniques to wind farm SCADA data to predict turbine power output and analyze how prediction performance is influenced by wake effects and turbine positioning.
+This project presents a structured analysis of wind farm SCADA data, combining engineering understanding of turbine behavior with machine learning techniques.
 
-The study combines data-driven modeling with physical interpretation of wind farm aerodynamics, providing insights into how wake interactions affect both turbine performance and model predictability.
+The work is organized into three stages:
+
+- **Sprint 2** — Power curve analysis and data validation  
+- **Sprint 3** — Wake effects and wind farm geometry  
+- **Sprint 4** — Machine learning power prediction  
+
+The goal is to understand both **how turbines behave physically** and **how well their power output can be predicted using data-driven models**.
 
 ---
 
 ## Objectives
 
-* Develop machine learning models to predict turbine power output
-* Compare linear and nonlinear modeling approaches
-* Investigate wake effects using turbine spatial relationships
-* Analyze how prediction accuracy varies across the wind farm
-* Identify and explain challenging turbines with high prediction error
+- Validate turbine behavior using SCADA power curves  
+- Identify and quantify wake effects across the wind farm  
+- Build machine learning models to predict turbine power output  
+- Compare model performance across turbines and flow conditions  
+- Analyze how wake interactions influence prediction accuracy  
 
 ---
 
 ## Dataset
 
-The analysis uses a DTU wind farm SCADA dataset:
+The analysis is based on a DTU wind farm SCADA dataset:
 
-* ~72,000 timestamps
-* 10-minute resolution
-* ~1.4 years of operation
-* 42 turbines arranged in a structured grid (A–F rows, 1–7 columns)
+- ~72,000 timestamps  
+- 10-minute resolution  
+- ~1.4 years of operation  
+- 42 turbines arranged in a grid (rows A–F, columns 1–7)  
 
-Available signals include:
+Signals used include:
 
-* Turbine power output
-* Nacelle wind speed
-* Yaw misalignment
-* Mast wind speed and wind direction
-* Operational status signals
+- Turbine power output  
+- Nacelle wind speed  
+- Yaw misalignment  
+- Mast wind speed  
+- Mast wind direction  
 
-> ⚠️ The dataset is not included in this repository due to size and licensing constraints.
-> To run the notebook, place the dataset file in the `/data` directory.
+> ⚠️ The dataset is **not included** in this repository due to size and licensing constraints.  
+> To run the notebooks, place the dataset file in the `data/` folder.
+
+---
+
+## Repository Structure
+wind-farm-ml-analysis/
+│
+├── notebooks/
+│ ├── sprint2_power_curve.ipynb
+│ ├── sprint3_wake_effects_analysis.ipynb
+│ └── sprint4_machine_learning_power_prediction.ipynb
+│
+├── figures/
+│ ├── sprint3_wake_loss_heatmap.png
+│ ├── sprint4_prediction_error_wake_chain.png
+│ ├── sprint4_distribution_of_error_full_wf.png
+│ ├── sprint4_pred_error_full_wf.png
+│ └── ...
+│
+├── data/ # dataset not included
+├── README.md
+├── requirements.txt
+└── .gitignore
+
 
 ---
 
 ## Methodology
 
 ### Feature Engineering
-
-* Averaged mast wind speed and direction
-* Circular encoding of wind direction (sin/cos)
-* Lag feature: previous power output
+- Average mast wind speed  
+- Circular encoding of wind direction (`sin`, `cos`)  
+- Previous power as lagged feature  
 
 ### Models
-
-* Linear Regression (baseline)
-* Random Forest
-* Gradient Boosting
+- Linear Regression  
+- Random Forest  
+- Gradient Boosting  
 
 ### Evaluation Metrics
-
-* Mean Absolute Error (MAE)
-* Root Mean Squared Error (RMSE)
-
----
-
-## Key Analysis Steps
-
-### 1. Single Turbine Modeling
-
-Initial models were developed for individual turbines to establish baseline performance and validate feature engineering.
-
-### 2. Wake Chain Analysis
-
-Turbines aligned with wind direction were analyzed (e.g. C2 → D2 → E2 → F2) to study how wake effects influence prediction accuracy.
-
-### 3. Full Wind Farm Analysis
-
-The pipeline was applied to all turbines, revealing spatial patterns in prediction error across the farm.
-
-### 4. Outlier Detection
-
-Specific turbines (e.g. E1) were identified as significantly harder to predict.
-
-### 5. Targeted Model Tuning
-
-Hyperparameter tuning was applied to the most difficult turbine to assess whether model improvements could reduce prediction error.
+- MAE (Mean Absolute Error)  
+- RMSE (Root Mean Squared Error)  
 
 ---
 
-## Results
+## Key Results
 
-* Tree-based models significantly outperform linear regression
-* Typical prediction error for most turbines: **RMSE ≈ 4–6 kW**
-* Prediction accuracy varies spatially across the wind farm
-* Turbines in stable wake conditions are easier to predict
-* Turbines with complex inflow or multiple wake interactions show higher error
-* Model tuning provided only modest improvement (~5%) for the most difficult turbine
+### Wake effects are visible in turbine power losses
+
+![Wake loss heatmap](figures/sprint3_wake_loss_heatmap.png)
+
+Wake losses were identified using upstream/downstream turbine relationships.  
+Strong wake effects occur when wind aligns with turbine rows.
+
+---
+
+### Prediction accuracy varies along wake chains
+
+![Wake chain error](figures/sprint4_prediction_error_wake_chain.png)
+
+Prediction error does not change monotonically downstream.  
+Turbines in stable wake conditions can be easier to predict than both upstream turbines and turbines exposed to more complex wake interactions.
+
+---
+
+### Prediction difficulty is spatially structured
+
+![Full wind farm RMSE map](figures/sprint4_distribution_of_error_full_wf.png)
+
+Most turbines achieve low prediction error (~4–6 kW), while a few turbines show significantly higher error due to complex inflow or data variability.
+
+---
+
+### Tree-based models outperform linear regression
+
+![Model comparison](figures/sprint4_pred_error_full_wf.png)
+
+Random Forest and Gradient Boosting consistently provide better performance than linear models, highlighting the nonlinear nature of turbine power generation.
 
 ---
 
 ## Key Insights
 
-* Wind turbine power prediction is inherently nonlinear
-* Wake effects influence predictability, not just performance
-* Stable wake regions can improve model accuracy
-* Complex flow conditions limit prediction performance regardless of model tuning
-* Machine learning models are constrained by underlying physical processes
+- Wind turbine power prediction is inherently nonlinear  
+- Wake effects influence both turbine performance and predictability  
+- Stable wake regions can improve prediction accuracy  
+- Prediction error varies spatially across the wind farm  
+- Model tuning has limited impact when physical complexity dominates  
 
 ---
 
-## Repository Structure
+## Notebooks
 
-```text
-wind-farm-scada-ml-analysis/
-│
-├── notebooks/
-│   └── scada_wind_farm_analysis.ipynb
-│
-├── figures/
-│   ├── spatial_rmse_map.png
-│   ├── wake_chain_analysis.png
-│   └── ...
-│
-├── data/                # (not included)
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
-```
+### Sprint 2 — Power Curve Analysis
+- SCADA data cleaning  
+- Empirical power curve generation  
+- Residual and variability analysis  
+
+---
+
+### Sprint 3 — Wake Effects Analysis
+- Wind farm geometry reconstruction  
+- Wind direction analysis  
+- Upstream/downstream turbine identification  
+- Wake loss estimation and mapping  
+
+---
+
+### Sprint 4 — Machine Learning Prediction
+- Feature engineering  
+- Model training and comparison  
+- Wake-chain prediction analysis  
+- Full wind farm error mapping  
+- Hardest turbine tuning (E1 case study)  
 
 ---
 
 ## How to Run
 
-1. Clone the repository:
-
-```bash
+### 1. Clone the repository
 git clone https://github.com/kacper1002/wind-farm-scada-ml-analysis.git
 cd wind-farm-scada-ml-analysis
-```
 
-2. Install dependencies:
-
-```bash
+### 2. Clone the repository
 pip install -r requirements.txt
-```
 
-3. Place the dataset in the `/data` folder
+### 3. Add dataset
+Place your data set file in:
+data/
 
-4. Open and run the notebook:
+### 4. Run notebooks
+Open and run in order:
 
-```bash
-notebooks/scada_wind_farm_analysis.ipynb
-```
+1. notebooks/sprint2_power_curve.ipynb
 
----
+2. notebooks/sprint3_wake_effects_analysis.ipynb
 
-## Future Improvements
+3. notebooks/sprint4_machine_learning_power_prediction.ipynb
 
-* Include additional physical features (e.g. turbulence intensity)
-* Test advanced models (e.g. XGBoost, LightGBM)
-* Incorporate temporal models (LSTM / time series approaches)
-* Extend analysis to wake interaction modeling between turbines
+## Future work
+- Include turbulence intensity and additional physical features
 
----
+- Test advanced models (e.g. XGBoost, LightGBM)
+
+- Develop generalized models across turbines
+
+- Incorporate time-series forecasting
+
+- Add wake-aware features from upstream turbines
 
 ## Author
-
 Kacper Szczykno
-MSc Wind Energy — Technical University of Denmark (DTU)
+MSc Wind Energy - Technical University of Denmark (DTU)
 
----
-
-## Final Note
-
-This project demonstrates how combining machine learning with domain knowledge can provide deeper insights into wind farm behavior, highlighting both the strengths and limitations of data-driven approaches in complex physical systems.
+## Final note
+This project demonstrates how combining machine learning with engineering understanding provides deeper insight into wind farm behavior, while also highlighting the limitations imposed by complex physical processes.
